@@ -21,6 +21,12 @@
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/org.javassist/javassist -->
+	<dependency>
+	    <groupId>org.javassist</groupId>
+	    <artifactId>javassist</artifactId>
+	    <version>3.22.0-GA</version>
+	</dependency>
   </dependencies>
   <build>
   	<finalName>javaagent-javassit</finalName>
@@ -34,6 +40,47 @@
 		        <target>1.8</target>  
 		    </configuration>  
 		</plugin>  
+		
+		<!-- 指定MANIFEST.MF文件 -->
+		 <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifestFile>src/main/java/META-INF/MANIFEST.MF</manifestFile>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                        </manifest>
+                        <manifestEntries>
+                            <copyright>feilong</copyright>
+                        </manifestEntries>
+                    </archive>                   
+                </configuration>
+            </plugin>
+            <!-- 入口类（即main函数所在的类) 否则jar运行时提示“没有主清单属性”-->
+             <plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-shade-plugin</artifactId>
+		        <version>1.2.1</version>
+		        <executions>
+		            <execution>
+		                <phase>package</phase>
+		                <goals>
+		                        <goal>shade</goal>
+		                </goals>
+		                    <configuration>
+		                        <transformers>
+		                            <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+		                                <mainClass>com.arthur.gao.javaagent_javassit.MethodCostTimeTest</mainClass>
+		                            </transformer>
+		                        </transformers>
+		                    </configuration>
+		            </execution>
+		        </executions>
+		     </plugin>
   	</plugins>
   	
   </build>

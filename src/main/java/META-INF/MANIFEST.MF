@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Premain-Class: com.arthur.gao.javaagent_javassit.MyAgent
+Can-Redefine-Classes: true
+Boot-Class-Path: javassist-3.22.0-GA.jar
